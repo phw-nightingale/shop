@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.shop.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.it.shop.pojo.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="code" jdbcType="INTEGER" property="code" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="discounts" jdbcType="INTEGER" property="discounts" />
+    <result column="logo_key" jdbcType="VARCHAR" property="logoKey" />
+    <result column="invetory" jdbcType="INTEGER" property="invetory" />
+    <result column="sales" jdbcType="INTEGER" property="sales" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="creat_id" jdbcType="INTEGER" property="creatId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.it.shop.pojo.Product">
+    <result column="desc" jdbcType="LONGVARCHAR" property="desc" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, code, price, integral, discounts, logo_key, invetory, sales, unit, status, 
+    creat_time, creat_id
+  </sql>
+  <sql id="Blob_Column_List">
+    desc
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.it.shop.pojo.ProductExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.it.shop.pojo.ProductExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.it.shop.pojo.ProductExample">
+    delete from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.it.shop.pojo.Product">
+    insert into product (id, name, code, 
+      price, integral, discounts, 
+      logo_key, invetory, sales, 
+      unit, status, creat_time, 
+      creat_id, desc)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=INTEGER}, 
+      #{price,jdbcType=INTEGER}, #{integral,jdbcType=INTEGER}, #{discounts,jdbcType=INTEGER}, 
+      #{logoKey,jdbcType=VARCHAR}, #{invetory,jdbcType=INTEGER}, #{sales,jdbcType=INTEGER}, 
+      #{unit,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{creatId,jdbcType=INTEGER}, #{desc,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.it.shop.pojo.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="integral != null">
+        integral,
+      </if>
+      <if test="discounts != null">
+        discounts,
+      </if>
+      <if test="logoKey != null">
+        logo_key,
+      </if>
+      <if test="invetory != null">
+        invetory,
+      </if>
+      <if test="sales != null">
+        sales,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="creatId != null">
+        creat_id,
+      </if>
+      <if test="desc != null">
+        desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="integral != null">
+        #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="discounts != null">
+        #{discounts,jdbcType=INTEGER},
+      </if>
+      <if test="logoKey != null">
+        #{logoKey,jdbcType=VARCHAR},
+      </if>
+      <if test="invetory != null">
+        #{invetory,jdbcType=INTEGER},
+      </if>
+      <if test="sales != null">
+        #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatId != null">
+        #{creatId,jdbcType=INTEGER},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.it.shop.pojo.ProductExample" resultType="java.lang.Long">
+    select count(*) from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update product
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=INTEGER},
+      </if>
+      <if test="record.integral != null">
+        integral = #{record.integral,jdbcType=INTEGER},
+      </if>
+      <if test="record.discounts != null">
+        discounts = #{record.discounts,jdbcType=INTEGER},
+      </if>
+      <if test="record.logoKey != null">
+        logo_key = #{record.logoKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invetory != null">
+        invetory = #{record.invetory,jdbcType=INTEGER},
+      </if>
+      <if test="record.sales != null">
+        sales = #{record.sales,jdbcType=INTEGER},
+      </if>
+      <if test="record.unit != null">
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.creatTime != null">
+        creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creatId != null">
+        creat_id = #{record.creatId,jdbcType=INTEGER},
+      </if>
+      <if test="record.desc != null">
+        desc = #{record.desc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update product
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=INTEGER},
+      integral = #{record.integral,jdbcType=INTEGER},
+      discounts = #{record.discounts,jdbcType=INTEGER},
+      logo_key = #{record.logoKey,jdbcType=VARCHAR},
+      invetory = #{record.invetory,jdbcType=INTEGER},
+      sales = #{record.sales,jdbcType=INTEGER},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      creat_id = #{record.creatId,jdbcType=INTEGER},
+      desc = #{record.desc,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update product
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=INTEGER},
+      integral = #{record.integral,jdbcType=INTEGER},
+      discounts = #{record.discounts,jdbcType=INTEGER},
+      logo_key = #{record.logoKey,jdbcType=VARCHAR},
+      invetory = #{record.invetory,jdbcType=INTEGER},
+      sales = #{record.sales,jdbcType=INTEGER},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      creat_id = #{record.creatId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.it.shop.pojo.Product">
+    update product
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="integral != null">
+        integral = #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="discounts != null">
+        discounts = #{discounts,jdbcType=INTEGER},
+      </if>
+      <if test="logoKey != null">
+        logo_key = #{logoKey,jdbcType=VARCHAR},
+      </if>
+      <if test="invetory != null">
+        invetory = #{invetory,jdbcType=INTEGER},
+      </if>
+      <if test="sales != null">
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatId != null">
+        creat_id = #{creatId,jdbcType=INTEGER},
+      </if>
+      <if test="desc != null">
+        desc = #{desc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.it.shop.pojo.Product">
+    update product
+    set name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      integral = #{integral,jdbcType=INTEGER},
+      discounts = #{discounts,jdbcType=INTEGER},
+      logo_key = #{logoKey,jdbcType=VARCHAR},
+      invetory = #{invetory,jdbcType=INTEGER},
+      sales = #{sales,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      creat_id = #{creatId,jdbcType=INTEGER},
+      desc = #{desc,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.it.shop.pojo.Product">
+    update product
+    set name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      integral = #{integral,jdbcType=INTEGER},
+      discounts = #{discounts,jdbcType=INTEGER},
+      logo_key = #{logoKey,jdbcType=VARCHAR},
+      invetory = #{invetory,jdbcType=INTEGER},
+      sales = #{sales,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      creat_id = #{creatId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
